@@ -7,7 +7,7 @@ public class Ship extends SpaceObject{
     public Ship(int ix, int iy){
         super(ix,  iy,  2, "shipicon.png");
     }
-    //moves based on variable returned by keypressed
+
     public void move(){
         if(leftmove){
             x += -speed;
@@ -29,7 +29,7 @@ public class Ship extends SpaceObject{
         }
 
     }
-    //returns the direction the ship should move
+
     public void keyPressed(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
@@ -39,7 +39,7 @@ public class Ship extends SpaceObject{
             rightmove = true;
         }
     }
-    //sets the variable telling the ship to move to falsse
+
     public void keyReleased(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
