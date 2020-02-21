@@ -9,7 +9,7 @@ public class Missile extends SpaceObject implements ActionListener{
         timer = new Timer(1, this);
         timer.start();
     }
-    //returns that the missile should be shot if the key is the spacebar
+
     public static boolean keyPressed(KeyEvent k){
         int key = k.getKeyCode();
         if(key == 32){
@@ -18,7 +18,7 @@ public class Missile extends SpaceObject implements ActionListener{
             return false;
         }
     }
-    //moves the missile by changing y coordinate
+
     @Override
     public void actionPerformed(ActionEvent a){
         y = y-speed;
