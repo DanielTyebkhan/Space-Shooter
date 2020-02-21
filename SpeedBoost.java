@@ -8,7 +8,7 @@ public class SpeedBoost extends SpaceObject implements ActionListener{
         timer = new Timer(5, this);
         timer.start();
     }
-    //moves the speedboost by changing its y coordinate
+
     @Override
     public void actionPerformed(ActionEvent a){
         y += speed;
