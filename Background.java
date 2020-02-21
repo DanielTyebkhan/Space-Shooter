@@ -21,7 +21,7 @@ public class Background extends JPanel implements KeyListener{
     public static final Sound DEATHSOUND = new Sound("deathsound.au");
     public static final Sound LASERSOUND = new Sound("lasersound.aiff");
     public static final Sound KILLSOUND = new Sound("killsound.aiff");
-    //initializes variables/starts timersa
+
     public Background(){
         score = 0;
         scorelabel = new JLabel(score +" points");
@@ -41,7 +41,7 @@ public class Background extends JPanel implements KeyListener{
         maintimer.start();
         alientimer.start();
     }
-    //the repaint method which is called
+
     @Override  
     public void paintComponent(Graphics g){
         scorelabel.setText(score +" points");
@@ -60,11 +60,11 @@ public class Background extends JPanel implements KeyListener{
             LASERSOUND.play();
             missilepaint = false;
         }
-        //draws missiles
+
         for(Missile mis: missiles){
             g2d.drawImage(mis.getImage(), mis.x, mis.y, this); 
         }
-        //draws aliens
+
         for(Alien al: aliens){
             if(al.y + al.height > ship.y){
                 DEATHSOUND.play(); 
@@ -77,7 +77,7 @@ public class Background extends JPanel implements KeyListener{
             g2d.drawImage(s.getImage(), s.x, s.y, this);
         }
     }
-   //repaints when the user releases a key
+
     @Override
     public void keyReleased(KeyEvent e){
         
@@ -85,7 +85,7 @@ public class Background extends JPanel implements KeyListener{
         ship.keyReleased(e);
         repaint();
     }
-    //repaints when the user presses a key
+
     @Override
     public void keyPressed(KeyEvent e){
         ship.keyPressed(e);
@@ -98,7 +98,7 @@ public class Background extends JPanel implements KeyListener{
         }
         repaint();
     }
-    //checks collisions with a rectangular hitox
+
     public boolean collided(SpaceObject m, SpaceObject a){
         if((m.x > a.x && m.x + m.width < a.x + a.width && m.y <= a.y + a.height)
         ||(m.x < a.x && m.x + m.width > a.x + a.width && m.y <= a.y + a.height)
@@ -109,7 +109,7 @@ public class Background extends JPanel implements KeyListener{
             return false;
         }
     }
-    //adds object that should be removed to the appropriate arraylists
+
     public void checkCollisions(){
         for(Missile m: missiles){
             if(m.y<0){
@@ -139,7 +139,7 @@ public class Background extends JPanel implements KeyListener{
 
     @Override public void keyTyped(KeyEvent e){
     }
-    //repaints the ship each frame for smooth movement
+    
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
@@ -147,7 +147,7 @@ public class Background extends JPanel implements KeyListener{
             repaint();
         }
     }
-    //spawn alien each time timer triggers
+
     class AlienTimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
@@ -157,7 +157,7 @@ public class Background extends JPanel implements KeyListener{
             aliens.add(tempa);
         }
     }
-    //chance to spawn seed boost each time timer triggers
+
     class SpeedBoostSpawnListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
@@ -170,7 +170,7 @@ public class Background extends JPanel implements KeyListener{
             }
         }
     }
-    //ends the power boost from speedboost
+
     class SpeedBoostPowerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
