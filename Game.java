@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
-//runs the background in the constructor
+
 public class Game {
     static JFrame frame;
     static Background maingame = new Background();
@@ -27,7 +27,7 @@ public class Game {
     public static void main(String[] args){
         Game run = new Game();
     }
-    //removes everything and dsiplays the endgame screen
+
     public static void endGame(){
         frame.remove(maingame);
         gamescore = maingame.score;
@@ -68,7 +68,7 @@ public class Game {
         frame.repaint();
         frame.revalidate();
     }
-    //checks if a highscore was attained
+
     public static void highscore(){
         if(gamescore > highscore){
             //new thread prevents concurrent modification exception
