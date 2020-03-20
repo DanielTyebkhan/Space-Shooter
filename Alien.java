@@ -1,16 +1,30 @@
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+
+/**
+ * @author Daniel Tyebkhan
+ */
 public class Alien extends SpaceObject implements ActionListener{
-    Timer timer;
-    public Alien(int ix, int iy, int ispeed){
-        super(ix, iy, ispeed, "alienicon.png");
+    private Timer timer;
+
+    /**
+     * Constructor
+     * @param x The initial x position of the alien
+     * @param y The initial y position of the alien
+     * @param speed The alien's speed
+     */
+    public Alien(int x, int y, int speed){
+        super(x, y, speed, "alienicon.png");
         timer = new Timer(5, this);
         timer.start();
     }
-    
+
+    /**
+     * Moves the alien
+     * @param a the action event triggering the method
+     */
     @Override
     public void actionPerformed(ActionEvent a){
-        y += speed;
+        setY(getY() + getSpeed());
     }
 }

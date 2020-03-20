@@ -2,34 +2,59 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 public class Ship extends SpaceObject{
-    boolean leftmove = false;
-    boolean rightmove = false;
-    public Ship(int ix, int iy){
-        super(ix,  iy,  2, "shipicon.png");
+    private boolean leftmove = false;
+    private boolean rightmove = false;
+
+    /**
+     * Constructor
+     * @param x The initial x position
+     * @param y The initial y position
+     */
+    public Ship(int x, int y){
+        super(x,  y,  2, "shipicon.png");
     }
 
+    /**
+     * Moves the ship
+     */
     public void move(){
         if(leftmove){
-            x += -speed;
-            if(x>1000-width){
-                x=1000-width;
-            }
-            if(x<0){
-                x=0;
-            }
+            moveLeft();
+        }else if(rightmove){
+            moveRight();
         }
-        if(rightmove){
-            x += speed;
-            if(x>1000-width){
-                x=1000-width;
-            }
-            if(x<0){
-                x=0;
-            }
-        }
-
     }
 
+    /**
+     * Moves the ship right
+     */
+    private void moveRight() {
+        setX(getX() + getSpeed());
+        if(getX()>1000-getWidth()){
+            setX(1000 - getWidth());
+        }
+        if(getX()<0){
+            setX(0);
+        }
+    }
+
+    /**
+     * Moves the ship left
+     */
+    private void moveLeft() {
+        setX(getX()-getSpeed());
+        if(getX()>1000-getWidth()){
+            setX(1000-getWidth());
+        }
+        if(getX()<0){
+            setX(0);
+        }
+    }
+
+    /**
+     * Checks which key the user presses
+     * @param k The key event the user caused
+     */
     public void keyPressed(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
@@ -40,6 +65,10 @@ public class Ship extends SpaceObject{
         }
     }
 
+    /**
+     * Checks when the user releases a key
+     * @param k The key event the user triggered
+     */
     public void keyReleased(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
