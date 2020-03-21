@@ -1,16 +1,26 @@
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 public class SpeedBoost extends SpaceObject implements ActionListener{
-    Timer timer;
-    public SpeedBoost(int ix, int iy, int ispeed){
-        super(ix, iy, ispeed, "speedboosticon.png");
+    private Timer timer;
+
+    /**
+     * Constructor
+     * @param x The initial x position
+     * @param y The intial y position
+     * @param speed The speed
+     */
+    public SpeedBoost(int x, int y, int speed){
+        super(x, y, speed, "speedboosticon.png");
         timer = new Timer(5, this);
         timer.start();
     }
 
+    /**
+     * Moves the Speed Boost
+     * @param a The action triggering the move
+     */
     @Override
     public void actionPerformed(ActionEvent a){
-        y += speed;
+        setY(getY() + getSpeed());
     }
 }
