@@ -30,7 +30,7 @@ public class Game {
 
     public static void endGame(){
         frame.remove(maingame);
-        gamescore = maingame.score;
+        gamescore = maingame.getScore();
         highscore();
         endpanel = new JPanel();
         endpanel.setBackground(Color.black);
@@ -72,13 +72,8 @@ public class Game {
     public static void highscore(){
         if(gamescore > highscore){
             //new thread prevents concurrent modification exception
-            new Thread(){
-                public void run(){
-                    JOptionPane.showMessageDialog(frame, "Congratulations, You got a new Highscore!");
-
-                }
-            }.start(); 
-            try(PrintWriter out = new PrintWriter("highscore.txt");){
+            new Thread(() -> JOptionPane.showMessageDialog(frame, "Congratulations, You got a new Highscore!")).start();
+            try(PrintWriter out = new PrintWriter("highscore.txt")){
                 highscore = gamescore;
                 out.println(highscore);
             }catch(FileNotFoundException e){

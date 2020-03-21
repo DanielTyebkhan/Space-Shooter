@@ -3,25 +3,35 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 public class Background extends JPanel implements KeyListener{
-    Ship ship;
-    boolean missilepaint;
-    boolean missilelimiter;
-    ArrayList <Missile> toremovem = new ArrayList<Missile>();
-    ArrayList <Missile> missiles = new ArrayList<Missile>();
-    ArrayList <Alien> toremovea = new ArrayList<Alien>();
-    ArrayList <Alien> aliens = new ArrayList<Alien>();
-    ArrayList <SpeedBoost> speedboosts = new ArrayList<SpeedBoost>();
-    ArrayList <SpeedBoost> toremoves = new ArrayList<SpeedBoost>();
-    JLabel scorelabel;
-    int score;
-    javax.swing.Timer maintimer;
-    javax.swing.Timer alientimer;
-    javax.swing.Timer speedboostspawntimer;
-    javax.swing.Timer speedboostpowertimer;
+
     public static final Sound DEATHSOUND = new Sound("deathsound.au");
     public static final Sound LASERSOUND = new Sound("lasersound.aiff");
     public static final Sound KILLSOUND = new Sound("killsound.aiff");
 
+    private Ship ship;
+
+    private boolean missilepaint;
+    private boolean missilelimiter;
+
+    private ArrayList <Missile> toremovem = new ArrayList<>();
+    private ArrayList <Missile> missiles = new ArrayList<>();
+    private ArrayList <Alien> toremovea = new ArrayList<>();
+    private ArrayList <Alien> aliens = new ArrayList<>();
+    private ArrayList <SpeedBoost> speedboosts = new ArrayList<>();
+    private ArrayList <SpeedBoost> toremoves = new ArrayList<>();
+
+    private JLabel scorelabel;
+
+    private int score;
+
+    private javax.swing.Timer maintimer;
+    private javax.swing.Timer alientimer;
+    private javax.swing.Timer speedboostspawntimer;
+    private javax.swing.Timer speedboostpowertimer;
+
+    /**
+     * Constructor
+     */
     public Background(){
         score = 0;
         scorelabel = new JLabel(score +" points");
@@ -51,36 +61,35 @@ public class Background extends JPanel implements KeyListener{
         speedboosts.removeAll(toremoves);
         super.paintComponent(g);    
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(ship.getImage(), ship.x, ship.y, this);
-        //cehcks if new missiles should be drawn/added to arraylist
+        g2d.drawImage(ship.getImage(), ship.getX(), ship.getY(), this);
+        //checks if new missiles should be drawn/added to arraylist
         if(missilepaint){
-            Missile m = new Missile(ship.x, ship.y, 1);
-            m.x = m.x + ship.width/2 - m.width/2;
-            missiles.add(m);
+            Missile missile = new Missile(ship.getX(), ship.getY(), 1);
+            missile.setX(missile.getX() + ship.getWidth()/2 - missile.getWidth()/2);
+            missiles.add(missile);
             LASERSOUND.play();
             missilepaint = false;
         }
 
         for(Missile mis: missiles){
-            g2d.drawImage(mis.getImage(), mis.x, mis.y, this); 
+            g2d.drawImage(mis.getImage(), mis.getX(), mis.getY(), this);
         }
 
         for(Alien al: aliens){
-            if(al.y + al.height > ship.y){
+            if(al.getY() + al.getHeight() > ship.getY()){
                 DEATHSOUND.play(); 
                 Game.endGame();
             }
-            g2d.drawImage(al.getImage(), al.x, al.y, this);
+            g2d.drawImage(al.getImage(), al.getX(), al.getY(), this);
         }
-        //draws speedboosts
+
         for(SpeedBoost s: speedboosts){
-            g2d.drawImage(s.getImage(), s.x, s.y, this);
+            g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e){
-        
         missilelimiter = false;//prevents the user from rapid firing by holding down space bar
         ship.keyReleased(e);
         repaint();
@@ -100,19 +109,14 @@ public class Background extends JPanel implements KeyListener{
     }
 
     public boolean collided(SpaceObject m, SpaceObject a){
-        if((m.x > a.x && m.x + m.width < a.x + a.width && m.y <= a.y + a.height)
-        ||(m.x < a.x && m.x + m.width > a.x + a.width && m.y <= a.y + a.height)
-        ||(m.x > a.x && m.x < a.x + a.width && m.y <= a.y + a.height)
-        ){
-            return true;
-        }else{
-            return false;
-        }
+        return (m.getX() > a.getX() && m.getX() + m.getWidth() < a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight())
+                || (m.getX() < a.getX() && m.getX() + m.getWidth() > a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight())
+                || (m.getX() > a.getX() && m.getX() < a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight());
     }
 
     public void checkCollisions(){
         for(Missile m: missiles){
-            if(m.y<0){
+            if(m.getY()<0){
                 toremovem.add(m);
             }
             for(Alien a: aliens){
@@ -124,13 +128,13 @@ public class Background extends JPanel implements KeyListener{
                 }
             }
             for(SpeedBoost s: speedboosts){
-                if(s.y>ship.y){
+                if(s.getY()>ship.getY()){
                     toremoves.add(s);
                 }
                 if(collided(m, s)){
                     toremovem.add(m);
                     toremoves.add(s);
-                    ship.speed = 2*ship.speed;
+                    ship.setSpeed(2*ship.getSpeed());
                     speedboostpowertimer.start();
                 }
             }
@@ -174,8 +178,12 @@ public class Background extends JPanel implements KeyListener{
     class SpeedBoostPowerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
-            ship.speed = ship.speed/2;
+            ship.setSpeed(ship.getSpeed()/2);
             speedboostpowertimer.stop();
         }
+    }
+
+    public int getScore() {
+        return score;
     }
 }

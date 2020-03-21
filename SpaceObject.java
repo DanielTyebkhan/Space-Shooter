@@ -92,4 +92,12 @@ abstract class SpaceObject{
     public int getSpeed(){
         return speed;
     }
+
+    /**
+     * Sets the speed
+     * @param speed The new speed
+     */
+    public void setSpeed(int speed){
+        this.speed = speed;
+    }
 }
