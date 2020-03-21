@@ -4,93 +4,102 @@ import javax.swing.*;
 import java.util.*;
 public class Background extends JPanel implements KeyListener{
 
-    public static final Sound DEATHSOUND = new Sound("deathsound.au");
-    public static final Sound LASERSOUND = new Sound("lasersound.aiff");
-    public static final Sound KILLSOUND = new Sound("killsound.aiff");
+    public static final Sound DEATH_SOUND = new Sound("deathsound.au");
+    public static final Sound LASER_SOUND = new Sound("lasersound.aiff");
+    public static final Sound KILL_SOUND = new Sound("killsound.aiff");
+
+    public static final int MAIN_TIME = 1;
+    public static final int ALIEN_SPAWN_TIME = 1000;
+    public static final int SPEED_BOOST_SPAWN_TIME = 10000;
+    public static final int SHIP_START_X = 400;
+    public static final int SHIP_START_Y = 700;
+    public static final int SPAWN_SPEEDS = 1;
+
+    public static final String POINTS_MSG = " points";
 
     private Ship ship;
 
-    private boolean missilepaint;
-    private boolean missilelimiter;
+    private boolean missilePaint;
+    private boolean missileLimiter;
 
-    private ArrayList <Missile> toremovem = new ArrayList<>();
+    private ArrayList <Missile> toRemoveMissiles = new ArrayList<>();
     private ArrayList <Missile> missiles = new ArrayList<>();
-    private ArrayList <Alien> toremovea = new ArrayList<>();
+    private ArrayList <Alien> toRemoveAliens = new ArrayList<>();
     private ArrayList <Alien> aliens = new ArrayList<>();
-    private ArrayList <SpeedBoost> speedboosts = new ArrayList<>();
-    private ArrayList <SpeedBoost> toremoves = new ArrayList<>();
+    private ArrayList <SpeedBoost> speedBoosts = new ArrayList<>();
+    private ArrayList <SpeedBoost> toRemoveSpeedBoosts = new ArrayList<>();
 
-    private JLabel scorelabel;
+    private JLabel scoreLabel;
 
     private int score;
 
-    private javax.swing.Timer maintimer;
-    private javax.swing.Timer alientimer;
-    private javax.swing.Timer speedboostspawntimer;
-    private javax.swing.Timer speedboostpowertimer;
+    private javax.swing.Timer mainTimer;
+    private javax.swing.Timer alienTimer;
+    private javax.swing.Timer speedBoostSpawnTimer;
+    private javax.swing.Timer speedBoostPowerTimer;
 
     /**
      * Constructor
      */
     public Background(){
         score = 0;
-        scorelabel = new JLabel(score +" points");
-        scorelabel.setForeground(Color.green);
-        this.add(scorelabel);
+        scoreLabel = new JLabel(score + POINTS_MSG);
+        scoreLabel.setForeground(Color.green);
+        this.add(scoreLabel);
         setBackground(Color.black);
-        ship = new Ship(400, 700); 
+        ship = new Ship(SHIP_START_X, SHIP_START_Y);
         this.setFocusable(true);
         addKeyListener(this);
-        missilepaint = false;
-        missilelimiter = false;
-        alientimer = new javax.swing.Timer(1000, new AlienTimerListener());
-        maintimer = new javax.swing.Timer(1, new TimerListener());
-        speedboostspawntimer = new javax.swing.Timer(10000, new SpeedBoostSpawnListener());
-        speedboostpowertimer = new javax.swing.Timer(4000, new SpeedBoostPowerListener());
-        speedboostspawntimer.start();
-        maintimer.start();
-        alientimer.start();
+        missilePaint = false;
+        missileLimiter = false;
+        alienTimer = new javax.swing.Timer(ALIEN_SPAWN_TIME, new AlienTimerListener());
+        mainTimer = new javax.swing.Timer(MAIN_TIME, new TimerListener());
+        speedBoostSpawnTimer = new javax.swing.Timer(SPEED_BOOST_SPAWN_TIME, new SpeedBoostSpawnListener());
+        speedBoostPowerTimer = new javax.swing.Timer(SpeedBoost.DURATION, new SpeedBoostPowerListener());
+        speedBoostSpawnTimer.start();
+        mainTimer.start();
+        alienTimer.start();
     }
 
     @Override  
     public void paintComponent(Graphics g){
-        scorelabel.setText(score +" points");
+        scoreLabel.setText(score + POINTS_MSG);
         checkCollisions();
-        missiles.removeAll(toremovem);
-        aliens.removeAll(toremovea);
-        speedboosts.removeAll(toremoves);
+        missiles.removeAll(toRemoveMissiles);
+        aliens.removeAll(toRemoveAliens);
+        speedBoosts.removeAll(toRemoveSpeedBoosts);
         super.paintComponent(g);    
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(ship.getImage(), ship.getX(), ship.getY(), this);
         //checks if new missiles should be drawn/added to arraylist
-        if(missilepaint){
+        if(missilePaint){
             Missile missile = new Missile(ship.getX(), ship.getY(), 1);
             missile.setX(missile.getX() + ship.getWidth()/2 - missile.getWidth()/2);
             missiles.add(missile);
-            LASERSOUND.play();
-            missilepaint = false;
+            LASER_SOUND.play();
+            missilePaint = false;
         }
 
-        for(Missile mis: missiles){
-            g2d.drawImage(mis.getImage(), mis.getX(), mis.getY(), this);
+        for(Missile m: missiles){
+            g2d.drawImage(m.getImage(), m.getX(), m.getY(), this);
         }
 
-        for(Alien al: aliens){
-            if(al.getY() + al.getHeight() > ship.getY()){
-                DEATHSOUND.play(); 
+        for(Alien a: aliens){
+            if(a.getY() + a.getHeight() > ship.getY()){
+                DEATH_SOUND.play();
                 Game.endGame();
             }
-            g2d.drawImage(al.getImage(), al.getX(), al.getY(), this);
+            g2d.drawImage(a.getImage(), a.getX(), a.getY(), this);
         }
 
-        for(SpeedBoost s: speedboosts){
+        for(SpeedBoost s: speedBoosts){
             g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e){
-        missilelimiter = false;//prevents the user from rapid firing by holding down space bar
+        missileLimiter = false;//prevents the user from rapid firing by holding down space bar
         ship.keyReleased(e);
         repaint();
     }
@@ -99,10 +108,10 @@ public class Background extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e){
         ship.keyPressed(e);
         ship.move();
-        if(!missilelimiter){
+        if(!missileLimiter){
             if(Missile.keyPressed(e)){
-                missilepaint = true;
-                missilelimiter = true;
+                missilePaint = true;
+                missileLimiter = true;
             }
         }
         repaint();
@@ -117,25 +126,25 @@ public class Background extends JPanel implements KeyListener{
     public void checkCollisions(){
         for(Missile m: missiles){
             if(m.getY()<0){
-                toremovem.add(m);
+                toRemoveMissiles.add(m);
             }
             for(Alien a: aliens){
                 if(collided(m, a)){
-                    toremovem.add(m);
-                    toremovea.add(a);
+                    toRemoveMissiles.add(m);
+                    toRemoveAliens.add(a);
                     score+=2;
-                    KILLSOUND.play();
+                    KILL_SOUND.play();
                 }
             }
-            for(SpeedBoost s: speedboosts){
+            for(SpeedBoost s: speedBoosts){
                 if(s.getY()>ship.getY()){
-                    toremoves.add(s);
+                    toRemoveSpeedBoosts.add(s);
                 }
                 if(collided(m, s)){
-                    toremovem.add(m);
-                    toremoves.add(s);
+                    toRemoveMissiles.add(m);
+                    toRemoveSpeedBoosts.add(s);
                     ship.setSpeed(2*ship.getSpeed());
-                    speedboostpowertimer.start();
+                    speedBoostPowerTimer.start();
                 }
             }
         }
@@ -157,7 +166,7 @@ public class Background extends JPanel implements KeyListener{
         public void actionPerformed(ActionEvent a){
             Random random = new Random();
             int alienx = random.nextInt((900-100)+1)+100;
-            Alien tempa = new Alien(alienx, 0, 1);
+            Alien tempa = new Alien(alienx, 0, SPAWN_SPEEDS);
             aliens.add(tempa);
         }
     }
@@ -169,8 +178,8 @@ public class Background extends JPanel implements KeyListener{
             if(spawnrandom > .5){
                 Random random = new Random();
                 int speedboostx = random.nextInt((900-100)+1)+100;
-                SpeedBoost temps = new SpeedBoost(speedboostx, 0, 1);
-                speedboosts.add(temps);
+                SpeedBoost temps = new SpeedBoost(speedboostx, 0, SPAWN_SPEEDS);
+                speedBoosts.add(temps);
             }
         }
     }
@@ -179,7 +188,7 @@ public class Background extends JPanel implements KeyListener{
         @Override
         public void actionPerformed(ActionEvent a){
             ship.setSpeed(ship.getSpeed()/2);
-            speedboostpowertimer.stop();
+            speedBoostPowerTimer.stop();
         }
     }
 

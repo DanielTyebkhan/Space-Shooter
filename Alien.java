@@ -15,7 +15,7 @@ public class Alien extends SpaceObject implements ActionListener{
      */
     public Alien(int x, int y, int speed){
         super(x, y, speed, "alienicon.png");
-        timer = new Timer(5, this);
+        timer = new Timer(TIMER_DELAY, this);
         timer.start();
     }
 

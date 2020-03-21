@@ -5,6 +5,8 @@ import javax.swing.*;
  * @author Daniel Tyebkhan
  */
 abstract class SpaceObject{
+    public static final int TIMER_DELAY = 5;
+
     private int y;
     private int x;
     private int speed;

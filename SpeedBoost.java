@@ -5,6 +5,8 @@ import java.awt.event.*;
  * @author Daniel Tyebkhan
  */
 public class SpeedBoost extends SpaceObject implements ActionListener{
+    public static final int DURATION = 4000;
+
     private Timer timer;
 
     /**
@@ -15,7 +17,7 @@ public class SpeedBoost extends SpaceObject implements ActionListener{
      */
     public SpeedBoost(int x, int y, int speed){
         super(x, y, speed, "speedboosticon.png");
-        timer = new Timer(5, this);
+        timer = new Timer(TIMER_DELAY, this);
         timer.start();
     }
 

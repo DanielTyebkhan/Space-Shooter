@@ -5,6 +5,8 @@ import java.awt.event.*;
  * @author Daniel Tyebkhan
  */
 public class Missile extends SpaceObject implements ActionListener{
+    public static final int MISSILE_DELAY = 1;
+
     private Timer timer;
 
     /**
@@ -15,7 +17,7 @@ public class Missile extends SpaceObject implements ActionListener{
      */
     public Missile(int x, int y, int speed){
         super(x, y, speed, "missileicon.png");
-        timer = new Timer(1, this);
+        timer = new Timer(MISSILE_DELAY, this);
         timer.start();
     }
 
