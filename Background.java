@@ -61,6 +61,10 @@ public class Background extends JPanel implements KeyListener{
         alienTimer.start();
     }
 
+    /**
+     * Calls the parent's paint method
+     * @param g The graphics object
+     */
     @Override  
     public void paintComponent(Graphics g){
         scoreLabel.setText(score + POINTS_MSG);
@@ -97,13 +101,21 @@ public class Background extends JPanel implements KeyListener{
         }
     }
 
+    /**
+     * Prevents the user from rapid firing by holding down space bar
+     * @param e Not used
+     */
     @Override
     public void keyReleased(KeyEvent e){
-        missileLimiter = false;//prevents the user from rapid firing by holding down space bar
+        missileLimiter = false;
         ship.keyReleased(e);
         repaint();
     }
 
+    /**
+     * Moves the ship or shoots a missile based on the player's action
+     * @param e the player's action
+     */
     @Override
     public void keyPressed(KeyEvent e){
         ship.keyPressed(e);
@@ -117,12 +129,21 @@ public class Background extends JPanel implements KeyListener{
         repaint();
     }
 
+    /**
+     * Checks if two objects have collided
+     * @param m The first object
+     * @param a The second object
+     * @return true if they collided, else false
+     */
     public boolean collided(SpaceObject m, SpaceObject a){
         return (m.getX() > a.getX() && m.getX() + m.getWidth() < a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight())
                 || (m.getX() < a.getX() && m.getX() + m.getWidth() > a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight())
                 || (m.getX() > a.getX() && m.getX() < a.getX() + a.getWidth() && m.getY() <= a.getY() + a.getHeight());
     }
 
+    /**
+     * Checks if missiles collided with aliens or speedboosts
+     */
     public void checkCollisions(){
         for(Missile m: missiles){
             if(m.getY()<0){
@@ -143,7 +164,7 @@ public class Background extends JPanel implements KeyListener{
                 if(collided(m, s)){
                     toRemoveMissiles.add(m);
                     toRemoveSpeedBoosts.add(s);
-                    ship.setSpeed(2*ship.getSpeed());
+                    ship.setSpeed(SpeedBoost.MULITPLIER*ship.getSpeed());
                     speedBoostPowerTimer.start();
                 }
             }
@@ -152,7 +173,10 @@ public class Background extends JPanel implements KeyListener{
 
     @Override public void keyTyped(KeyEvent e){
     }
-    
+
+    /**
+     * Moves the ship
+     */
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
@@ -161,16 +185,21 @@ public class Background extends JPanel implements KeyListener{
         }
     }
 
+    /**
+     * Spawns aliens
+     */
     class AlienTimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
             Random random = new Random();
             int alienx = random.nextInt((900-100)+1)+100;
-            Alien tempa = new Alien(alienx, 0, SPAWN_SPEEDS);
-            aliens.add(tempa);
+            aliens.add(new Alien(alienx, 0, SPAWN_SPEEDS));
         }
     }
 
+    /**
+     * Spawns SpeedBoosts
+     */
     class SpeedBoostSpawnListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
@@ -178,20 +207,26 @@ public class Background extends JPanel implements KeyListener{
             if(spawnrandom > .5){
                 Random random = new Random();
                 int speedboostx = random.nextInt((900-100)+1)+100;
-                SpeedBoost temps = new SpeedBoost(speedboostx, 0, SPAWN_SPEEDS);
-                speedBoosts.add(temps);
+                speedBoosts.add(new SpeedBoost(speedboostx, 0, SPAWN_SPEEDS));
             }
         }
     }
 
+    /**
+     * Adjusts the ship's speed when the speedboosts duration runs out
+     */
     class SpeedBoostPowerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent a){
-            ship.setSpeed(ship.getSpeed()/2);
+            ship.setSpeed(ship.getSpeed()/SpeedBoost.MULITPLIER);
             speedBoostPowerTimer.stop();
         }
     }
 
+    /**
+     * Gets the score
+     * @return the current score
+     */
     public int getScore() {
         return score;
     }

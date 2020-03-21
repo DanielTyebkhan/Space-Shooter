@@ -6,6 +6,7 @@ import java.awt.event.*;
  */
 public class SpeedBoost extends SpaceObject implements ActionListener{
     public static final int DURATION = 4000;
+    public static final int MULITPLIER = 2;
 
     private Timer timer;
 
