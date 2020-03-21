@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.event.*;
+
+/**
+ * @author Daniel Tyebkhan
+ */
 public class SpeedBoost extends SpaceObject implements ActionListener{
     private Timer timer;
 

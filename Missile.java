@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.event.*;
+
+/**
+ * @author Daniel Tyebkhan
+ */
 public class Missile extends SpaceObject implements ActionListener{
     private Timer timer;
 

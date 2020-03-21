@@ -1,6 +1,9 @@
-//superclass for spawns
 import java.awt.*;
 import javax.swing.*;
+
+/**
+ * @author Daniel Tyebkhan
+ */
 abstract class SpaceObject{
     private int y;
     private int x;
@@ -34,30 +37,58 @@ abstract class SpaceObject{
         return objecticon;
     }
 
+    /**
+     * Gets the y position
+     * @return the current y position
+     */
     public int getY(){
         return y;
     }
 
+    /**
+     * Sets the y position
+     * @param y The new y position
+     */
     public void setY(int y){
         this.y = y;
     }
 
+    /**
+     * Gets the x position
+     * @return The current x position
+     */
     public int getX(){
         return x;
     }
 
+    /**
+     * Sets the x position
+     * @param x The new x position
+     */
     public void setX(int x){
         this.x = x;
     }
 
+    /**
+     * Gets the width
+     * @return The width
+     */
     public int getWidth(){
         return width;
     }
 
+    /**
+     * Gets the height
+     * @return The height
+     */
     public int getHeight(){
         return height;
     }
 
+    /**
+     * Gets the speed
+     * @return The current speed
+     */
     public int getSpeed(){
         return speed;
     }

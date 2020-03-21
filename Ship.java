@@ -1,9 +1,11 @@
-import java.awt.*;
-import javax.swing.*;
 import java.awt.event.*;
+
+/**
+ * @author Daniel Tyebkhan
+ */
 public class Ship extends SpaceObject{
-    private boolean leftmove = false;
-    private boolean rightmove = false;
+    private boolean leftMove = false;
+    private boolean rightMove = false;
 
     /**
      * Constructor
@@ -18,9 +20,9 @@ public class Ship extends SpaceObject{
      * Moves the ship
      */
     public void move(){
-        if(leftmove){
+        if(leftMove){
             moveLeft();
-        }else if(rightmove){
+        }else if(rightMove){
             moveRight();
         }
     }
@@ -58,10 +60,10 @@ public class Ship extends SpaceObject{
     public void keyPressed(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
-            leftmove = true;
+            leftMove = true;
         }
         if(key == KeyEvent.VK_RIGHT){
-            rightmove = true;
+            rightMove = true;
         }
     }
 
@@ -72,10 +74,10 @@ public class Ship extends SpaceObject{
     public void keyReleased(KeyEvent k){
         int key = k.getKeyCode();
         if(key == KeyEvent.VK_LEFT){
-            leftmove = false;
+            leftMove = false;
         }
         if(key == KeyEvent.VK_RIGHT){
-            rightmove = false;
+            rightMove = false;
         }
     }
 }
