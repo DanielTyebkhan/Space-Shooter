@@ -32,8 +32,8 @@ public class Ship extends SpaceObject{
      */
     private void moveRight() {
         setX(getX() + getSpeed());
-        if(getX()>1000-getWidth()){
-            setX(1000 - getWidth());
+        if(getX()>Game.WIDTH - getWidth()){
+            setX(Game.HEIGHT - getWidth());
         }
         if(getX()<0){
             setX(0);
@@ -45,8 +45,8 @@ public class Ship extends SpaceObject{
      */
     private void moveLeft() {
         setX(getX()-getSpeed());
-        if(getX()>1000-getWidth()){
-            setX(1000-getWidth());
+        if(getX()>Game.WIDTH-getWidth()){
+            setX(Game.WIDTH-getWidth());
         }
         if(getX()<0){
             setX(0);
